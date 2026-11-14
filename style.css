@@ -1,0 +1,536 @@
+:root {
+  color-scheme: light;
+  --ink: #17251e;
+  --muted: #4f5f55;
+  --paper: #f1f3ef;
+  --green: #285744;
+  --gold: #805519;
+  --line: #c5d0c8;
+  --shadow: 0 12px 32px rgb(24 39 29 / 20%);
+  font-family: "DM Sans", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.5;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.family-app {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.unlock-panel {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.unlock-card {
+  width: min(420px, 100%);
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.unlock-card h1 {
+  margin-bottom: 8px;
+  font-size: 24px;
+}
+
+.unlock-card > p {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.unlock-card form {
+  display: grid;
+  gap: 10px;
+}
+
+.unlock-card label {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.unlock-card input:not([type="checkbox"]) {
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 11px;
+  border: 1px solid #b9c7bd;
+  border-radius: 8px;
+  color: var(--ink);
+  background: #fff;
+}
+
+.unlock-card .remember-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.unlock-card .remember-option input {
+  flex: 0 0 16px;
+  width: 16px;
+  min-height: 16px;
+  height: 16px;
+  margin: 1px 0 0;
+  accent-color: var(--green);
+}
+
+.unlock-card input:focus-visible {
+  outline: 2px solid #426d50;
+  outline-offset: 2px;
+}
+
+.unlock-card button {
+  min-height: 40px;
+  margin-top: 4px;
+}
+
+.unlock-status {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.unlock-status.error {
+  color: #8c2828;
+}
+
+.unlock-status:empty {
+  display: none;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.site-header {
+  z-index: 1;
+  display: flex;
+  flex: 0 0 54px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+}
+
+.browser-status {
+  margin: 0 0 0 auto;
+  color: #8c2828;
+  font-size: 11px;
+}
+
+h1 {
+  overflow: hidden;
+  margin: 0;
+  font: 400 20px/1.2 Georgia, serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.page {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  padding: 8px 12px 12px;
+}
+
+.tree-section {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.tree-toolbar {
+  z-index: 2;
+  display: flex;
+  flex: 0 0 40px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 4px 7px;
+}
+
+.tree-controls {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.icon-button,
+.text-button,
+.directory-toggle {
+  border: 1px solid #b8c5bb;
+  border-radius: 8px;
+  color: var(--ink);
+  background: #fff;
+  cursor: pointer;
+}
+
+.icon-button {
+  width: 34px;
+  height: 32px;
+  font-size: 19px;
+  line-height: 1;
+}
+
+.text-button,
+.directory-toggle {
+  min-height: 32px;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.directory-toggle {
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+
+.directory-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.directory-toggle::before {
+  margin-right: 7px;
+  color: var(--green);
+  content: "+";
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.directory-section[open] .directory-toggle::before {
+  content: "−";
+}
+
+.icon-button:hover,
+.text-button:hover,
+.directory-toggle:hover {
+  border-color: #718d79;
+  background: #edf3ee;
+}
+
+.icon-button:focus-visible,
+.text-button:focus-visible,
+.directory-toggle:focus-visible,
+.search-wrap input:focus-visible {
+  outline: 2px solid #426d50;
+  outline-offset: 2px;
+}
+
+.zoom-level {
+  min-width: 40px;
+  color: var(--muted);
+  font-size: 11px;
+  text-align: center;
+}
+
+.tree-viewport {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid #b9c7bd;
+  border-radius: 12px;
+  background-color: #f8faf7;
+  background-image: radial-gradient(#cbd6cd 0.8px, transparent 0.8px);
+  background-size: 19px 19px;
+  cursor: grab;
+  touch-action: none;
+}
+
+.tree-viewport.dragging {
+  cursor: grabbing;
+}
+
+#familyTree {
+  display: block;
+  overflow: visible;
+}
+
+.person-card rect {
+  fill: #fff;
+  stroke: #aebdb2;
+  stroke-width: 1.5;
+  filter: drop-shadow(0 3px 5px #1f36291c);
+}
+
+.person-card.expandable {
+  cursor: pointer;
+}
+
+.person-card.expandable:hover rect,
+.person-card.expandable:focus-visible rect {
+  stroke: var(--family-color, #315e44);
+  stroke-width: 2.4;
+}
+
+.person-card.descendant rect {
+  fill: var(--family-tint, #eaf2eb);
+  stroke: var(--family-color, #75927d);
+  stroke-width: 1.8;
+}
+
+.person-card.focus rect {
+  fill: #fff2a6;
+  stroke: #a67c00;
+  stroke-width: 3;
+  filter: drop-shadow(0 5px 8px #332b103b);
+}
+
+.person-card.focus.expandable:hover rect,
+.person-card.focus.expandable:focus-visible rect {
+  stroke: #795d00;
+  stroke-width: 3.6;
+}
+
+.person-card.ancestor rect {
+  fill: #fff;
+  stroke: #89978d;
+  stroke-width: 1.6;
+}
+
+.person-card.partner rect {
+  fill: #fff;
+  stroke: #b6c2b9;
+  stroke-width: 1.5;
+}
+
+.person-number {
+  fill: var(--green);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.expansion-indicator {
+  fill: var(--green);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.partner-tag {
+  fill: #526459;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.person-name {
+  fill: var(--ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.person-card.partner .person-name {
+  fill: #43534a;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.person-card.focus .person-name {
+  fill: #17251e;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.person-card.focus .person-years {
+  fill: #415248;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.person-years {
+  fill: #526157;
+  font-size: 11px;
+}
+
+.tree-link {
+  fill: none;
+  stroke: #9aada0;
+  stroke-width: 1.8;
+}
+
+.partner-link {
+  fill: none;
+  stroke: #4c6c56;
+  stroke-width: 2.5;
+}
+
+.directory-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: min(440px, calc(100vw - 32px));
+  max-height: min(70vh, 560px);
+  overflow: auto;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.directory-section {
+  position: relative;
+}
+
+.search-wrap {
+  display: block;
+}
+
+.search-wrap input {
+  width: 100%;
+  height: 38px;
+  padding: 0 11px;
+  border: 1px solid #b9c7bd;
+  border-radius: 8px;
+  outline: 0;
+  font-size: 12px;
+}
+
+.directory {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.directory-item {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  text-align: left;
+}
+
+.directory-item:hover {
+  border-color: #829b88;
+  background: #eaf1eb;
+}
+
+.directory-number {
+  flex: 0 0 25px;
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.directory-name {
+  overflow: hidden;
+  font-size: 11px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.empty {
+  grid-column: 1 / -1;
+  margin: 8px 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 540px) {
+  .site-header {
+    flex-basis: 50px;
+    padding: 0 14px;
+  }
+
+  h1 {
+    font-size: 18px;
+  }
+
+  .page {
+    padding: 5px 6px 6px;
+  }
+
+  .tree-toolbar {
+    padding-right: 2px;
+    padding-left: 2px;
+  }
+
+  .tree-controls {
+    gap: 4px;
+  }
+
+  .text-button {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .directory-panel {
+    width: calc(100vw - 20px);
+  }
+
+  .directory {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-height: 480px) {
+  .site-header {
+    flex-basis: 44px;
+  }
+
+  .tree-toolbar {
+    flex-basis: 36px;
+    padding-bottom: 4px;
+  }
+}

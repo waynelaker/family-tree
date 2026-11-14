@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A family tree and numbered family directory.">
+  <title>Family Tree</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <section id="unlockPanel" class="unlock-panel" aria-labelledby="unlockTitle">
+    <div class="unlock-card">
+      <h1 id="unlockTitle">Family Tree</h1>
+      <p>Enter the family password to view the tree.</p>
+      <form id="unlockForm">
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" required>
+        <label class="remember-option">
+          <input id="rememberBrowser" type="checkbox" checked>
+          <span>Remember password on this browser</span>
+        </label>
+        <button id="unlockButton" class="text-button" type="submit">Unlock</button>
+        <p id="unlockStatus" class="unlock-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+  <div id="familyApp" class="family-app" hidden>
+    <header class="site-header">
+      <h1 id="familyTitle">Family Tree</h1>
+      <p id="browserStatus" class="browser-status" role="status" aria-live="polite" hidden></p>
+      <button id="forgetBrowser" class="text-button" type="button">Forget this browser</button>
+    </header>
+    <main class="page">
+      <section class="tree-section" aria-label="Family tree">
+        <div class="tree-toolbar">
+          <details class="directory-section">
+            <summary class="directory-toggle">Find a person</summary>
+            <div class="directory-panel">
+              <label class="search-wrap">
+                <span class="sr-only">Search family members by name or number</span>
+                <input
+                  id="search"
+                  name="family-tree-directory-search"
+                  type="text"
+                  inputmode="search"
+                  placeholder="Search names or numbers…"
+                  autocomplete="off"
+                  autocapitalize="off"
+                  autocorrect="off"
+                  spellcheck="false"
+                >
+              </label>
+              <div id="directory" class="directory"></div>
+            </div>
+          </details>
+          <div class="tree-controls" aria-label="Tree controls">
+            <button id="zoomOut" class="icon-button" aria-label="Zoom out">−</button>
+            <span id="zoomLevel" class="zoom-level">100%</span>
+            <button id="zoomIn" class="icon-button" aria-label="Zoom in">+</button>
+            <button id="resetView" class="text-button" aria-label="Return to default view">Reset view</button>
+            <button id="showAll" class="text-button" aria-label="Show all generations">Show all</button>
+          </div>
+        </div>
+        <div id="treeViewport" class="tree-viewport" aria-label="Family tree. Drag to pan, use controls or mouse wheel to zoom, and activate numbered family cards to expand or collapse their descendants.">
+          <svg id="familyTree" role="img" aria-label="Family tree diagram"><g id="treeCanvas"></g></svg>
+        </div>
+        <p id="status" class="sr-only" aria-live="polite"></p>
+      </section>
+    </main>
+  </div>
+  <script src="family.js"></script>
+</body>
+</html>
