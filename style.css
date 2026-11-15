@@ -24,6 +24,8 @@ body {
 body {
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   color: var(--ink);
   background: var(--paper);
@@ -524,13 +526,63 @@ h1 {
   }
 }
 
-@media (max-height: 480px) {
+@media (orientation: landscape) and (max-height: 500px) {
   .site-header {
-    flex-basis: 44px;
+    flex-basis: 32px;
+    gap: 8px;
+    padding: 0 10px;
+  }
+
+  h1 {
+    font-size: 15px;
+  }
+
+  .site-header .text-button {
+    min-height: 26px;
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  .page {
+    padding: 3px 4px 4px;
   }
 
   .tree-toolbar {
-    flex-basis: 36px;
-    padding-bottom: 4px;
+    position: absolute;
+    inset: 6px 6px auto;
+    flex-basis: auto;
+    height: 32px;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  .directory-section,
+  .tree-controls {
+    pointer-events: auto;
+  }
+
+  .tree-controls {
+    gap: 4px;
+  }
+
+  .icon-button {
+    width: 30px;
+    height: 28px;
+    font-size: 17px;
+  }
+
+  .tree-controls .text-button,
+  .directory-toggle {
+    min-height: 28px;
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  .zoom-level {
+    min-width: 34px;
+  }
+
+  .tree-viewport {
+    border-radius: 8px;
   }
 }
