@@ -395,6 +395,9 @@ function initializeFamily(FAMILY) {
   let pointerStart = null;
   let pointerTargetId = null;
   let pointerClickId = null;
+  let panPointerId = null;
+  let pinchStart = null;
+  const activePointers = new Map();
   let layout = null;
 
   const years = person => {
@@ -1133,17 +1136,86 @@ function initializeFamily(FAMILY) {
   $("#resetView").addEventListener("click", returnToDefaultView);
   search.addEventListener("input", () => buildDirectory(search.value));
 
+  function touchPoints() {
+    return [...activePointers.entries()]
+      .filter(([, pointer]) => pointer.pointerType === "touch")
+      .map(([id, pointer]) => ({ id, ...pointer }));
+  }
+
+  function pinchMetrics(points) {
+    const [first, second] = points;
+    const rect = viewport.getBoundingClientRect();
+    return {
+      centerX: (first.x + second.x) / 2 - rect.left,
+      centerY: (first.y + second.y) / 2 - rect.top,
+      distance: Math.hypot(second.x - first.x, second.y - first.y)
+    };
+  }
+
+  function startPinch(points = touchPoints()) {
+    if (points.length < 2) return;
+    const metrics = pinchMetrics(points);
+    pinchStart = {
+      distance: Math.max(metrics.distance, 1),
+      scale,
+      worldX: (metrics.centerX - tx) / scale,
+      worldY: (metrics.centerY - ty) / scale
+    };
+    dragging = false;
+    dragged = true;
+    panPointerId = null;
+    pointerStart = null;
+    pointerTargetId = null;
+    viewport.classList.add("dragging");
+  }
+
   viewport.addEventListener("pointerdown", event => {
+    activePointers.set(event.pointerId, {
+      x: event.clientX,
+      y: event.clientY,
+      pointerType: event.pointerType
+    });
+    viewport.setPointerCapture(event.pointerId);
+
+    if (event.pointerType === "touch" && touchPoints().length >= 2) {
+      startPinch();
+      return;
+    }
+    if (activePointers.size !== 1) {
+      dragged = true;
+      pointerTargetId = null;
+      return;
+    }
     dragging = true;
     dragged = false;
+    panPointerId = event.pointerId;
     pointerStart = { x: event.clientX, y: event.clientY };
     pointerTargetId = event.target.closest(".person-card.expandable")?.dataset.personId || null;
     dragStart = { x: event.clientX - tx, y: event.clientY - ty };
     viewport.classList.add("dragging");
-    viewport.setPointerCapture(event.pointerId);
   });
   viewport.addEventListener("pointermove", event => {
-    if (!dragging) return;
+    const pointer = activePointers.get(event.pointerId);
+    if (!pointer) return;
+    pointer.x = event.clientX;
+    pointer.y = event.clientY;
+
+    if (pinchStart) {
+      const points = touchPoints();
+      if (points.length >= 2) {
+        const metrics = pinchMetrics(points);
+        scale = Math.min(
+          2.2,
+          Math.max(0.03, pinchStart.scale * metrics.distance / pinchStart.distance)
+        );
+        tx = metrics.centerX - pinchStart.worldX * scale;
+        ty = metrics.centerY - pinchStart.worldY * scale;
+        dragged = true;
+        transform();
+        return;
+      }
+    }
+    if (!dragging || event.pointerId !== panPointerId) return;
     if (
       pointerStart &&
       Math.hypot(event.clientX - pointerStart.x, event.clientY - pointerStart.y) > 4
@@ -1155,6 +1227,33 @@ function initializeFamily(FAMILY) {
     transform();
   });
   function stopDragging(event) {
+    const wasPinching = Boolean(pinchStart);
+    activePointers.delete(event.pointerId);
+    const points = touchPoints();
+    if (points.length >= 2) {
+      startPinch(points);
+      return;
+    }
+    if (wasPinching && points.length === 1) {
+      const [remaining] = points;
+      pinchStart = null;
+      dragging = true;
+      dragged = true;
+      panPointerId = remaining.id;
+      pointerStart = { x: remaining.x, y: remaining.y };
+      dragStart = { x: remaining.x - tx, y: remaining.y - ty };
+      pointerTargetId = null;
+      viewport.classList.add("dragging");
+      return;
+    }
+    if (activePointers.size) {
+      dragging = false;
+      panPointerId = null;
+      pointerTargetId = null;
+      dragged = true;
+      return;
+    }
+
     if (event.type === "pointerup" && !dragged && pointerTargetId) {
       pointerClickId = pointerTargetId;
       toggleExpansion(pointerTargetId);
@@ -1163,6 +1262,8 @@ function initializeFamily(FAMILY) {
       }, 0);
     }
     dragging = false;
+    panPointerId = null;
+    pinchStart = null;
     pointerStart = null;
     pointerTargetId = null;
     viewport.classList.remove("dragging");
